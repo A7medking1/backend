@@ -14,13 +14,16 @@
 | # | المرحلة | المدة | الحالة |
 | --- | --- | --- | --- |
 | 1 | Node.js + TypeScript | 1.5 أسبوع | 🟡 شغّال |
-| 2 | Express | 1 أسبوع | ⬜ لسه |
-| 3 | MongoDB + Mongoose | 1.5 أسبوع | ⬜ لسه |
-| 4 | NestJS | 2.5 أسبوع | ⬜ لسه |
-| 5 | Auth & Security | 1.5 أسبوع | ⬜ لسه |
+| 2 | Express Fundamentals | 1.5 أسبوع | ⬜ لسه |
+| 3 | MongoDB + Mongoose (مع Express) | 1.5 أسبوع | ⬜ لسه |
+| 4 | Professional Express Architecture | 2 أسبوع | ⬜ لسه |
+| 5 | Auth & Security (Express) | 1.5 أسبوع | ⬜ لسه |
 | 6 | Testing + Docs | 1 أسبوع | ⬜ لسه |
 | 7 | Production & DevOps | 1.5 أسبوع | ⬜ لسه |
-| ★ | Capstone (salla_user backend) | 2 أسبوع | ⬜ لسه |
+| ★ | Capstone — salla_user backend بـ Express | 2 أسبوع | ⬜ لسه |
+| 🎁 | Bonus: NestJS (اختياري، بعد ما أبقى محترف Express) | 2.5 أسبوع | ⬜ لسه |
+
+> **قرار 2026-10-19:** الشركة شغالة Express، فـ Express بقى المسار الأساسي، وNestJS اتنقل لآخر الخطة كـ bonus. التفاصيل في [docs/PLAN.md](docs/PLAN.md).
 
 ---
 
@@ -55,3 +58,4 @@ _(أي حاجة مش واضحة تتكتب هنا لحد ما تتفهم)_
 | التاريخ | اللي اتعمل |
 | --- | --- |
 | 2026-10-19 | تجهيز فولدر `backend`، ملف `CLAUDE.md`، ملف المتابعة ده، ونسخ الخطة. كتابة الدرس 01. |
+| 2026-10-19 | أول commit على Git. تعديل الخطة: Express هو المسار الأساسي (مراحل 2 و4 اتوسعوا)، وNestJS بقى bonus في الآخر. |
