@@ -334,6 +334,72 @@ await Promise.all([1, 2, 3].map(() => wait(300)));
 
 ---
 
+## ✅ الحل والإجابات
+> الـAgent حل التمرين وجاوب الأسئلة بطلبي (2026-10-21). الكود في [exercises/04-event-loop/](../exercises/04-event-loop/). ارجعلهم وحاول تقولهم بكلامك.
+
+### نتايج التمرين (اتشغّلت فعلًا)
+| الجزء | الملف | النتيجة |
+| --- | --- | --- |
+| أ (ESM) | `order.ts` | `A G D E F C B` |
+| أ (CJS) | `order.cjs` | `A G F D E C B` ← `nextTick` اتنقل للأول |
+| ب | `blocking-server.ts` + `client.ts` | `/fast waited 4921 ms` 😱 |
+| ج | `fixed-server.ts` + `heavy-worker.ts` | `/fast waited 7 ms` ✅ |
+| د (6 hashes) | `pool.ts 6` | 4 في ~130–160ms، و2 في ~230ms |
+| د (8 hashes) | `pool.ts 8` | 4 في ~150–190ms، والـ4 التانيين في ~290–316ms (استنوا دفعة كاملة) |
+| د (8 hashes، pool = 8) | `UV_THREADPOOL_SIZE=8` | الـ8 كلهم في ~142–184ms |
+| هـ | `sequential-vs-parallel.ts` | `for + await: 1015 ms` vs `Promise.all: 200 ms` |
+
+> لاحظ إن `C` جه قبل `B` المرة دي، وفي الدرس فوق كان العكس. ده بالظبط الـ"عشوائي" اللي اتكلمنا عنه.
+
+**تشغّلهم إزاي:**
+```powershell
+npx tsx exercises/04-event-loop/order.ts
+node exercises/04-event-loop/order.cjs
+
+# terminal 1:
+npx tsx exercises/04-event-loop/blocking-server.ts   # أو fixed-server.ts
+# terminal 2:
+npx tsx exercises/04-event-loop/client.ts
+
+npx tsx exercises/04-event-loop/pool.ts 8
+$env:UV_THREADPOOL_SIZE=8; npx tsx exercises/04-event-loop/pool.ts 8
+
+npx tsx exercises/04-event-loop/sequential-vs-parallel.ts
+```
+
+### إجابات أسئلة المراجعة
+**1. thread واحد بيخدم 1000 request إزاي؟**
+الـJS بتاعك بيشتغل على thread واحد، بس هو **مابيستناش بنفسه**. لما request يحتاج داتابيز أو ملف أو network، Node بيبعت الطلب لنظام التشغيل أو للـthread pool، وبيروح يخدم الـrequest اللي بعده على طول. ولما الرد يرجع، الـcallback بتاعه بيدخل الطابور، والـevent loop بيشغّله. وأغلب وقت أي request في الـbackend **انتظار**، مش حسابات، فجرسون واحد بيكفّي.
+
+**2. `await User.find()` vs `bcrypt.hashSync()`**
+- `await User.find()`: الـmain thread بيبعت الـquery ويبقى **فاضي** يخدم غيره لحد ما الداتابيز ترد. ✅
+- `bcrypt.hashSync()`: الـmain thread **نفسه** بيعمل الحساب ومابيقدرش يعمل أي حاجة تانية لحد ما يخلّص. يعني كل الـrequests التانية واقفة. ❌ والحل `await bcrypt.hash()`، اللي بتبعت الحساب للـthread pool.
+
+**3. ليه `/fast` استنى؟**
+لأن `/slow` شغّال `while` loop على الـmain thread، **الوحيد** اللي بيشغّل JS. الـrequest بتاع `/fast` وصل للسيرفر فعلًا، بس الـcallback بتاعه مستني في الطابور، ومافيش حد فاضي يشغّله لحد ما الـloop تخلص. (4921ms ≈ الـ5 ثواني ناقص الـ100ms اللي استنيناها قبل ما نبعته.)
+
+**4. الترتيب**
+`console.log` (sync) ← `Promise.then` (microtask) ← `setTimeout(0)` (timers).
+واللي ممكن يتبدل مع `setImmediate` هو **`setTimeout(0)`**، وده لما يتعمل في أول الملف (main module). أما جوه I/O callback، فـ`setImmediate` دايمًا الأول.
+
+**5. الـCheckpoint: `await` جوه `for` vs `Promise.all`**
+- **ليه بطيء:** كل `await` بيوقّف الـloop لحد ما العملية دي تخلص، فالطلبات بتتبعت **واحد ورا التاني**، والوقت الكلي بيبقى **مجموع** الأوقات (5 × 200 = 1000ms).
+- **`Promise.all`:** بتبدأ الكل **مع بعض**، والوقت الكلي بيبقى **أطول واحد** بس (200ms).
+- **استخدم `Promise.all` لما** العمليات مستقلة عن بعض: هات user والأوردرات بتاعته والإحصائيات مع بعض.
+- **ماينفعش تستخدمه لما:**
+  - كل خطوة محتاجة نتيجة اللي قبلها (هات الـuser، وبعدين بالـ`regionId` بتاعه هات سعر الشحن).
+  - لازم الترتيب (اخصم من المخزن، وبعدين اعمل الأوردر).
+  - العدد كبير جدًا (10,000 request للداتابيز مع بعض هيضغطها، فالأحسن تقسّمهم دفعات).
+  - **وخلي بالك:** `Promise.all` بتفشل كلها لو واحدة بس فشلت. (الدرس 05: `allSettled`.)
+
+**6. المقابل في Flutter**
+`Isolate.run()` أو `compute()`. وفي الاتنين بتحتاجه لنفس السبب: **شغل CPU تقيل** هيوقّف الـthread الوحيد.
+- في Flutter: parsing لـJSON ضخم، أو معالجة صورة، عشان الـUI مايهنّجش.
+- هنا: hashing، أو ضغط صور، أو حسابات تقيلة، عشان باقي المستخدمين مايستنوش.
+- الفرق: الـworker والـisolate الاتنين مالهمش memory مشتركة مع الـmain thread، والتواصل بيحصل برسايل (`postMessage` / `SendPort`).
+
+---
+
 ## 📚 مصادر
 - [Node.js — The Node.js Event Loop](https://nodejs.org/en/learn/asynchronous-work/event-loop-timers-and-nexttick)
 - [Node.js — Don't Block the Event Loop](https://nodejs.org/en/learn/asynchronous-work/dont-block-the-event-loop) ← **اقراه كله**

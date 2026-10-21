@@ -4,8 +4,8 @@
 
 ## أنا واقف فين دلوقتي
 - **المرحلة:** 1 — Node.js + TypeScript
-- **الدرس الحالي:** [04 — Event Loop](phase-1-node-ts/lessons/04-event-loop.md) (أهم درس في الخطة)
-- **الخطوة الجاية:** أقرا الدرس 04 وأحل التمرين (أ: لغز الترتيب، ب: أقفّل السيرفر، ج: worker_threads). تمرين المرحلة رقم 3 جوّاه. لسه معلّق من قبل: رسالة commit `فف`.
+- **الدرس الحالي:** 05 — Callbacks → Promises → `async/await` + `Promise.all` (لسه ماتكتبش)
+- **الخطوة الجاية:** أذاكر حل وإجابات الدرس 04 (في آخر ملف الدرس)، وبعدين كتابة الدرس 05. لسه معلّق من قبل: رسالة commit `فف`.
 - **تاريخ البداية:** 2026-10-19
 
 ---
@@ -33,7 +33,7 @@
 - [x] 01 — تجهيز المشروع + `let/const`، arrow functions، destructuring، spread، optional chaining، `==` vs `===`، `null` vs `undefined`
 - [x] 02 — TypeScript: types، interfaces، generics، union types، enums
 - [x] 03 — ES Modules vs CommonJS + npm (`package.json`، scripts، dependencies vs devDependencies)
-- [ ] 04 — **Event Loop** و single-threaded (أهم درس في الخطة)
+- [x] 04 — **Event Loop** و single-threaded (أهم درس في الخطة)
 - [ ] 05 — Callbacks → Promises → `async/await` + `Promise.all`
 - [ ] 06 — Built-in modules: `fs`، `path`، `http`، `events`
 - [ ] 07 — `process.env` و `dotenv` + ESLint + Prettier
@@ -41,7 +41,7 @@
 ### التمارين
 - [ ] تمرين 1: CLI script يقرا JSON ويطبع إحصائيات
 - [ ] تمرين 2: HTTP server بـ `http` بس، فيه 3 routes
-- [ ] تمرين 3: loop تقيلة جوه request handler وأشوف السيرفر بيقف إزاي
+- [x] تمرين 3: loop تقيلة جوه request handler وأشوف السيرفر بيقف إزاي
 
 ### Checkpoint
 - [ ] أقدر أشرح ليه `await` جوه `for` loop ممكن يكون بطيء، وإمتى أستخدم `Promise.all` بداله.
@@ -57,6 +57,7 @@ _(أي حاجة مش واضحة تتكتب هنا لحد ما تتفهم)_
 - [ ] **`any` vs `unknown`**: `any` نفسها مابتضربش. هي بتقفل الـtype checking، فالغلط بيعدّي من الـcompile ويضرب وقت التشغيل. `unknown` بتجبرني أتأكد من النوع الأول.
 - [ ] **ESM imports بتتنفّذ قبل كود الملف** (depth-first بالترتيب): `dotenv.config()` بعد الـimports بتشتغل متأخر. مثال حقيقي: salla شغال بالصدفة. الحل `import "dotenv/config"` أول سطر أو `node --env-file=.env`.
 - [ ] **CommonJS عملي**: تمرين 03 الجزء ج اتأجّل. محتاج أكتب `module.exports`/`require` بإيدي مرة قبل المرحلة 4 (قراية كود Express 4 القديم).
+- [ ] **الدرس 04 كله الـAgent حلّه** (التمرين + الأسئلة). محتاج أشرح بكلامي: ليه `/fast` استنى، و`hashSync` vs `hash`، و`for+await` vs `Promise.all` (ده سؤال الـCheckpoint بتاع المرحلة، ولازم أجاوبه بنفسي قبل ما أقفل المرحلة 1).
 - [ ] أسئلة مراجعة الدرس 03 الـAgent جاوبها (الإجابات في آخر ملف الدرس). محتاج أقولها بكلامي.
 - [ ] أسئلة 3، 4، 5 بتوع الدرس 02 (literal union، `Partial` vs `Omit`، `?` vs `| undefined`) الـAgent هو اللي جاوبهم. محتاج أشرحهم بكلامي.
 
@@ -76,3 +77,4 @@ _(أي حاجة مش واضحة تتكتب هنا لحد ما تتفهم)_
 | 2026-10-21 | اتكتب الدرس 03 (ESM vs CJS، `import type`، امتداد `.js`، npm/semver/lock/scripts). تمرين الجزء أ بيقفل المعلّقات بتاعة `dev` و`@types/node`. |
 | 2026-10-21 | تمرين 03: الجزء أ خلص (`npm run dev -- <file>`، و`@types/node@24`). الجزء ب (تقسيم 02 على 4 ملفات ESM + script `ex03`) كتبه الـAgent بطلبي. الـrun والـtypecheck عدّوا. فاضل ج و د. |
 | 2026-10-21 | أسئلة الدرس 03 اتحلت (الـAgent، بطلبي) واتضافت في آخر ملف الدرس. **الدرس 03 خلص** (الجزء ج اتأجّل). اتكتب الدرس 04 (Event Loop) بأمثلة متجرّبة: لغز الترتيب ESM vs CJS، سيرفر بيقف 2.9s، الحل بـworker_threads، و`bcrypt.hashSync` في salla. |
+| 2026-10-21 | الدرس 04: الـAgent حل التمرين كله بطلبي (`exercises/04-event-loop/`، 8 ملفات) وجاوب الأسئلة الـ6 في آخر الدرس. النتايج: `/fast` استنى 4921ms ← 7ms بالـworker، و`for+await` 1015ms vs `Promise.all` 200ms. **الدرس 04 خلص** + تمرين المرحلة 3. |
