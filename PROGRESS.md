@@ -4,8 +4,8 @@
 
 ## أنا واقف فين دلوقتي
 - **المرحلة:** 1 — Node.js + TypeScript
-- **الدرس الحالي:** [03 — ES Modules vs CommonJS + npm](phase-1-node-ts/lessons/03-modules-and-npm.md)
-- **الخطوة الجاية:** أقرا الدرس 03 وأحل التمرين بإيدي (الجزء أ بيصلّح script `dev` و`@types/node`). لسه معلّق من قبل: script `dev`، نسخة `@types/node`، رسالة commit `فف`.
+- **الدرس الحالي:** [04 — Event Loop](phase-1-node-ts/lessons/04-event-loop.md) (أهم درس في الخطة)
+- **الخطوة الجاية:** أقرا الدرس 04 وأحل التمرين (أ: لغز الترتيب، ب: أقفّل السيرفر، ج: worker_threads). تمرين المرحلة رقم 3 جوّاه. لسه معلّق من قبل: رسالة commit `فف`.
 - **تاريخ البداية:** 2026-10-19
 
 ---
@@ -32,7 +32,7 @@
 ### الدروس
 - [x] 01 — تجهيز المشروع + `let/const`، arrow functions، destructuring، spread، optional chaining، `==` vs `===`، `null` vs `undefined`
 - [x] 02 — TypeScript: types، interfaces، generics، union types، enums
-- [ ] 03 — ES Modules vs CommonJS + npm (`package.json`، scripts، dependencies vs devDependencies)
+- [x] 03 — ES Modules vs CommonJS + npm (`package.json`، scripts، dependencies vs devDependencies)
 - [ ] 04 — **Event Loop** و single-threaded (أهم درس في الخطة)
 - [ ] 05 — Callbacks → Promises → `async/await` + `Promise.all`
 - [ ] 06 — Built-in modules: `fs`، `path`، `http`، `events`
@@ -55,6 +55,9 @@ _(أي حاجة مش واضحة تتكتب هنا لحد ما تتفهم)_
 - [ ] **`const` في JS**: المرجع ثابت، بس المحتوى ممكن يتغير (`list.push` شغالة).
 - [ ] `@ts-expect-error` و `noUncheckedIndexedAccess` والـ`!`: اتشرحوا، محتاج أعيد شرحهم بكلامي.
 - [ ] **`any` vs `unknown`**: `any` نفسها مابتضربش. هي بتقفل الـtype checking، فالغلط بيعدّي من الـcompile ويضرب وقت التشغيل. `unknown` بتجبرني أتأكد من النوع الأول.
+- [ ] **ESM imports بتتنفّذ قبل كود الملف** (depth-first بالترتيب): `dotenv.config()` بعد الـimports بتشتغل متأخر. مثال حقيقي: salla شغال بالصدفة. الحل `import "dotenv/config"` أول سطر أو `node --env-file=.env`.
+- [ ] **CommonJS عملي**: تمرين 03 الجزء ج اتأجّل. محتاج أكتب `module.exports`/`require` بإيدي مرة قبل المرحلة 4 (قراية كود Express 4 القديم).
+- [ ] أسئلة مراجعة الدرس 03 الـAgent جاوبها (الإجابات في آخر ملف الدرس). محتاج أقولها بكلامي.
 - [ ] أسئلة 3، 4، 5 بتوع الدرس 02 (literal union، `Partial` vs `Omit`، `?` vs `| undefined`) الـAgent هو اللي جاوبهم. محتاج أشرحهم بكلامي.
 
 ---
@@ -71,3 +74,5 @@ _(أي حاجة مش واضحة تتكتب هنا لحد ما تتفهم)_
 | 2026-10-21 | بدأت `exercises/02-types.ts` (خطوة 2 صح، وخطوة 1 اتكتبت object بدل union type). طلبت الحل فاتشرح سطر سطر في الشات، وبعدين أصرّيت إن الـAgent يكتبه في الملف (استثناء من القاعدة). tsx + typecheck عدّوا. فاضل: أسئلة المراجعة الـ5 + أجرّب أكسر الكود عن قصد. |
 | 2026-10-21 | جاوبت سؤالين مراجعة الدرس 02: 1 الفكرة صح بس محتاجة دقة، و2 صح من غير مثال. الـAgent جاوب 3 و4 و5. **الدرس 02 خلص.** |
 | 2026-10-21 | اتكتب الدرس 03 (ESM vs CJS، `import type`، امتداد `.js`، npm/semver/lock/scripts). تمرين الجزء أ بيقفل المعلّقات بتاعة `dev` و`@types/node`. |
+| 2026-10-21 | تمرين 03: الجزء أ خلص (`npm run dev -- <file>`، و`@types/node@24`). الجزء ب (تقسيم 02 على 4 ملفات ESM + script `ex03`) كتبه الـAgent بطلبي. الـrun والـtypecheck عدّوا. فاضل ج و د. |
+| 2026-10-21 | أسئلة الدرس 03 اتحلت (الـAgent، بطلبي) واتضافت في آخر ملف الدرس. **الدرس 03 خلص** (الجزء ج اتأجّل). اتكتب الدرس 04 (Event Loop) بأمثلة متجرّبة: لغز الترتيب ESM vs CJS، سيرفر بيقف 2.9s، الحل بـworker_threads، و`bcrypt.hashSync` في salla. |

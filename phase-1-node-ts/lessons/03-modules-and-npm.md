@@ -344,6 +344,44 @@ npm run typecheck
 
 ---
 
+## ✅ إجابات أسئلة المراجعة
+> الـAgent جاوبهم بطلبي (2026-10-21). ارجعلهم وحاول تقولهم بكلامك.
+
+**1.** لأن `"module": "nodenext"` بيمشي على قواعد Node، وNode في ESM لازم ياخد الامتداد. والملف اللي هيبقى موجود وقت التشغيل هو `orders.js` (بعد الـcompile)، فبتكتب اسمه هو. و`tsx` بيلاقي `orders.ts` لوحده.
+
+**2.**
+```js
+import express from "express";
+import { z } from "zod";
+const router = express.Router();
+export default router;
+```
+- `require("express")` كان بيرجع الـobject كله ← **default import**.
+- `{ z }` كانت destructuring ← **named import**.
+- `module.exports = router` (حاجة واحدة) ← **`export default`**.
+
+**3.**
+- `exports.a = 1` ← بتضيف `a` على نفس الـobject اللي `module.exports` بيشاور عليه ✅.
+- `exports = { a: 1 }` ← بتخلّي المتغير المحلي `exports` يشاور على object **جديد**. أما `module.exports` فبيفضل على القديم الفاضي، والملف بيصدّر `{}` ❌. (جرّبناها: بترجع `{}` فعلًا.)
+
+**4.** السؤال: "السيرفر محتاجها وهو شغال في الـproduction؟"
+| Package | مكانها | ليه |
+| --- | --- | --- |
+| `zod` | `dependencies` | بيعمل validation للـrequests وقت التشغيل |
+| `mongoose` | `dependencies` | بيكلّم الداتابيز وقت التشغيل |
+| `vitest` | `devDependencies` | للتستات بس |
+| `@types/express` | `devDependencies` | types بس، بتتمسح بعد الـcompile |
+
+**5.**
+- `5.3.0` ✅ أيوه، لأن `^` بتقبل أي minor أو patch أعلى طول ما الـmajor هو `5`.
+- `6.0.0` ❌ لأ، لأن الـmajor اتغيّر، وده معناه إن فيه تغييرات ممكن تكسر الكود.
+
+**6.**
+- `package-lock.json` بيسجّل النسخ **بالظبط** لكل package (حتى اللي جوه الـpackages). لما يتعمله commit، جهازك وجهاز زميلك والسيرفر بيبقى عندهم نفس الكود بالظبط.
+- `node_modules` كبير جدًا، وبيتعمل من جديد من الـlock في أي وقت (`npm ci`). وكمان فيه ملفات native بتتبني مخصوص لكل نظام تشغيل، فاللي على Windows ماينفعش على Linux.
+
+---
+
 ## 📚 مصادر
 - [Node.js — Modules: ECMAScript modules](https://nodejs.org/api/esm.html)
 - [Node.js — Modules: CommonJS](https://nodejs.org/api/modules.html)
