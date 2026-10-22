@@ -4,8 +4,8 @@
 
 ## أنا واقف فين دلوقتي
 - **المرحلة:** 1 — Node.js + TypeScript
-- **الدرس الحالي:** 05 — Callbacks → Promises → `async/await` + `Promise.all` (لسه ماتكتبش)
-- **الخطوة الجاية:** أذاكر حل وإجابات الدرس 04 (في آخر ملف الدرس)، وبعدين كتابة الدرس 05. لسه معلّق من قبل: رسالة commit `فف`.
+- **الدرس الحالي:** [06 — Built-in modules](phase-1-node-ts/lessons/06-built-in-modules.md) (اقراه من `lessons/06-built-in-modules.html`)
+- **الخطوة الجاية:** تمرين 06 في `exercises/06-builtins/`: CLI إحصائيات (تمرين 1 بتاع المرحلة)، وسيرفر `http` فيه 3 routes (تمرين 2)، والـevents. لسه معلّق من قبل: رسالة commit `فف`.
 - **تاريخ البداية:** 2026-10-19
 
 ---
@@ -34,7 +34,7 @@
 - [x] 02 — TypeScript: types، interfaces، generics، union types، enums
 - [x] 03 — ES Modules vs CommonJS + npm (`package.json`، scripts، dependencies vs devDependencies)
 - [x] 04 — **Event Loop** و single-threaded (أهم درس في الخطة)
-- [ ] 05 — Callbacks → Promises → `async/await` + `Promise.all`
+- [x] 05 — Callbacks → Promises → `async/await` + `Promise.all`
 - [ ] 06 — Built-in modules: `fs`، `path`، `http`، `events`
 - [ ] 07 — `process.env` و `dotenv` + ESLint + Prettier
 
@@ -58,6 +58,7 @@ _(أي حاجة مش واضحة تتكتب هنا لحد ما تتفهم)_
 - [ ] **ESM imports بتتنفّذ قبل كود الملف** (depth-first بالترتيب): `dotenv.config()` بعد الـimports بتشتغل متأخر. مثال حقيقي: salla شغال بالصدفة. الحل `import "dotenv/config"` أول سطر أو `node --env-file=.env`.
 - [ ] **CommonJS عملي**: تمرين 03 الجزء ج اتأجّل. محتاج أكتب `module.exports`/`require` بإيدي مرة قبل المرحلة 4 (قراية كود Express 4 القديم).
 - [ ] **الدرس 04 كله الـAgent حلّه** (التمرين + الأسئلة). محتاج أشرح بكلامي: ليه `/fast` استنى، و`hashSync` vs `hash`، و`for+await` vs `Promise.all` (ده سؤال الـCheckpoint بتاع المرحلة، ولازم أجاوبه بنفسي قبل ما أقفل المرحلة 1).
+- [ ] **الدرس 05 كله الـAgent حلّه**. أهم حاجة أفهمها بكلامي: الـ3 bugs (`forEach(async)`، و`return` من غير `await`، ونسيان `await`)، والفرق بين `Promise.all` و`Future.wait`.
 - [ ] أسئلة مراجعة الدرس 03 الـAgent جاوبها (الإجابات في آخر ملف الدرس). محتاج أقولها بكلامي.
 - [ ] أسئلة 3، 4، 5 بتوع الدرس 02 (literal union، `Partial` vs `Omit`، `?` vs `| undefined`) الـAgent هو اللي جاوبهم. محتاج أشرحهم بكلامي.
 
@@ -78,3 +79,7 @@ _(أي حاجة مش واضحة تتكتب هنا لحد ما تتفهم)_
 | 2026-10-21 | تمرين 03: الجزء أ خلص (`npm run dev -- <file>`، و`@types/node@24`). الجزء ب (تقسيم 02 على 4 ملفات ESM + script `ex03`) كتبه الـAgent بطلبي. الـrun والـtypecheck عدّوا. فاضل ج و د. |
 | 2026-10-21 | أسئلة الدرس 03 اتحلت (الـAgent، بطلبي) واتضافت في آخر ملف الدرس. **الدرس 03 خلص** (الجزء ج اتأجّل). اتكتب الدرس 04 (Event Loop) بأمثلة متجرّبة: لغز الترتيب ESM vs CJS، سيرفر بيقف 2.9s، الحل بـworker_threads، و`bcrypt.hashSync` في salla. |
 | 2026-10-21 | الدرس 04: الـAgent حل التمرين كله بطلبي (`exercises/04-event-loop/`، 8 ملفات) وجاوب الأسئلة الـ6 في آخر الدرس. النتايج: `/fast` استنى 4921ms ← 7ms بالـworker، و`for+await` 1015ms vs `Promise.all` 200ms. **الدرس 04 خلص** + تمرين المرحلة 3. |
+| 2026-10-21 | اتكتب الدرس 05 (callbacks، promisify، `withResolvers`، all/allSettled/race/any، 4 أخطاء production، و`catchAsyncError` في salla vs Express 5). كل الأمثلة متجرّبة على Node 24. |
+| 2026-10-21 | الدرس 05: الـAgent حل التمرين كله بطلبي (`exercises/05-async/`، 5 ملفات) وجاوب الأسئلة الـ7 في آخر الدرس. الـdashboard خلص في 326ms، والـ3 bugs اتصلّحوا. **الدرس 05 خلص.** |
+| 2026-10-21 | مشكلة القراية: العربي والإنجليزي بيتلخبطوا. الحل: صفحات HTML من اليمين للشمال وغامقة (`python docs/make-readable.py`)، وCSS للـpreview بتاع VS Code، وملف `review-answers` فيه كل إجابات الدروس 02–05. |
+| 2026-10-22 | اتكتب الدرس 06 (`fs` و`path` و`argv` و`http` و`events`). كل الأمثلة متجرّبة، ومعاها أمر `curl.exe` في PowerShell. فيه تمرين 1 و2 بتوع المرحلة. |

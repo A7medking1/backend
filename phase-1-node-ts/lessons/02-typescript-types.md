@@ -186,9 +186,9 @@ type LoginInput = Pick<User, "email" | "password">;
 3. `interface Order` فيه `id`، `customerId`، `items` (array من `OrderItem`)، `status`، `note` اختيارية، و`createdAt` تبقى `readonly`.
 4. function اسمها `orderTotal(order: Order): number` بتحسب الإجمالي.
 5. function اسمها `canMoveTo(from: OrderStatus, to: OrderStatus): boolean`. القواعد:
-   - `pending` → `accepted` أو `cancelled`
-   - `accepted` → `picked` أو `cancelled`
-   - `picked` → `delivered`
+   - `pending` ← `accepted` أو `cancelled`
+   - `accepted` ← `picked` أو `cancelled`
+   - `picked` ← `delivered`
    - `delivered` و `cancelled` → مفيش
    (💡 hint: `Record<OrderStatus, OrderStatus[]>` هيخليك تكتبها من غير `if` كتير، وTS هيزعق لو نسيت حالة.)
 6. `interface ApiResponse<T>` واعمل function اسمها `ok<T>(data: T, message?: string): ApiResponse<T>`.
