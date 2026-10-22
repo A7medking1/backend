@@ -288,6 +288,83 @@ curl.exe -X POST http://localhost:3000/orders -H "Content-Type: application/json
 
 ---
 
+## ✅ الحل والإجابات
+> الـAgent حل التمرين وجاوب الأسئلة بطلبي (2026-10-22). الكود في [exercises/06-builtins/](../exercises/06-builtins/). ارجعلهم وحاول تقولهم بكلامك.
+
+### الملفات
+| الملف | فيه إيه |
+| --- | --- |
+| `order.ts` | الـtype بتاع الأوردر، و`isOrder` و`isOrderList` بيتأكدوا من شكل الداتا الجاية من بره |
+| `stats.ts` | تمرين 1 بتاع المرحلة |
+| `server.ts` | تمرين 2، ومعاه الـevents |
+| `client.ts` | بيجرّب كل الـroutes مرة واحدة |
+
+### نتايج `stats.ts` (اتشغّلت فعلًا)
+```
+orders:        5
+revenue:       860 (cancelled excluded)
+average order: 215.00
+by status:     { delivered: 2, pending: 1, cancelled: 1, accepted: 1 }
+top customer:  10 (3 orders)
+```
+| الحالة | الرسالة | exit code |
+| --- | --- | --- |
+| من غير اسم ملف | `usage: npx tsx stats.ts <orders.json>` | 1 |
+| ملف مش موجود | `file not found: nope.json` | 1 |
+| JSON بايظ | `not valid JSON: ...` | 1 |
+| JSON بشكل غلط | `JSON must be an array of orders` | 1 |
+
+### نتايج `server.ts` (بـ`client.ts`)
+```
+GET  /health                  -> 200 {"ok":true}
+GET  /orders?status=delivered -> 200 [ أوردر 1 و 4 ]
+GET  /orders?status=done      -> 400 {"error":"unknown status: done"}
+POST /orders {13, 75}         -> 201 {"id":6,"customerId":13,"total":75,"status":"pending"}
+POST /orders oops             -> 400 {"error":"invalid JSON"}
+POST /orders {"x", 75}        -> 400 {"error":"customerId must be a number"}
+POST /orders {13, 0}          -> 400 {"error":"total must be greater than 0"}
+GET  /nothing                 -> 404 {"error":"not found"}
+```
+وفي `data/orders.log` اتكتب: `2026-10-22T05:32:55.572Z order 6 created`
+
+### حاجات تاخد بالك منها في الحل
+- **`isOrder` اسمه type guard:** الـreturn type بتاعه `value is Order`. يعني لو رجع `true`، الـTS بيعرف إن الداتا بقت `Order`. وده الشكل اللي هيتعمل بـZod بعدين في سطر واحد.
+- **`try/catch` كبيرة حوالين كل الـroutes:** أي error مش متوقع بيرجع `500` بدل ما السيرفر يقع. وده نفس فكرة الـ`globalErrorMiddleware` في salla.
+- **⚠️ مشكلة مخفية:** لو جه طلبين `POST` في نفس اللحظة، الاتنين ممكن يقروا الملف قبل ما أي واحد يكتب، فأوردر هيضيع أو يتكرر نفس الـ`id`. ده اسمه **race condition**، وده من أسباب استخدام داتابيز (المرحلة 3) بدل ملف.
+
+### إجابات أسئلة المراجعة
+
+#### 1. ليه `path.join` بدل الجمع بـ`+`؟
+ويندوز بيفصل الفولدرات بـ`\` ولينكس بـ`/`، والسيرفر غالبًا لينكس. `path.join` بيحط الفاصل الصح لكل نظام، وكمان بيظبط الـ`..` والـ`/` الزيادة. ولو جمعت بإيدك، الكود هيشتغل عندك ويقع على السيرفر.
+
+#### 2. `readFile("data/orders.json")` من فولدر تاني
+المسار النسبي بيتحسب من **الفولدر اللي شغّلت منه الأمر**، مش من مكان الملف. فلو شغّلت من `D:\backend` بدل `phase-1-node-ts`، هيدوّر في المكان الغلط ويرمي `ENOENT`.
+**الحل:** ابني المسار من مكان الملف نفسه:
+```ts
+const ORDERS_FILE = path.join(import.meta.dirname, "data", "orders.json");
+```
+وده اللي عملناه في `server.ts`، فالسيرفر بيشتغل من أي فولدر.
+
+#### 3. ليه الـbody بيتقري بـ`for await`؟
+الـrequest بيوصل على الشبكة **حتت** (chunks)، خصوصًا لو كبير زي صورة. و`req` نفسه stream. فـ`for await` بيستنى كل حتة ويجمّعها لحد ما الـbody يكمل، وساعتها بس تقدر تعمل `JSON.parse`. وده الشغل اللي `express.json()` بيعمله بدالك.
+
+#### 4. 3 حاجات Express بيعملها بدالك
+- **الـrouting:** `app.get("/orders", ...)` بدل `if (req.method === "GET" && url.pathname === "/orders")`.
+- **قراية الـbody:** `express.json()` بدل `readBody` و`JSON.parse` والـ`400` بتاع الـJSON البايظ.
+- **الرد:** `res.status(201).json(order)` بدل `writeHead` و`JSON.stringify` و`end`.
+- وكمان: `req.query` و`req.params`، والـ404 والـerror handling كـmiddleware.
+
+#### 5. `emit` sync ولا async؟
+**sync.** كل الـlisteners بتتنادى بالترتيب **قبل** السطر اللي بعد `emit`.
+- لو listener فيه شغل CPU تقيل، هيوقّف الـrequest والسيرفر كله (الدرس 04).
+- لو الـlistener **async** (زي اللي بيكتب في `orders.log`)، `emit` بيبدأه بس **مابيستناهوش**. فأي error جواه مش هيوصل للـ`try/catch` اللي حوالين `emit`، ولازم تمسكه جوه الـlistener نفسه، وإلا هيبقى unhandled rejection ويقع السيرفر (الدرس 05).
+
+#### 6. إمتى `readFileSync`؟
+- ✅ **مسموح:** وقت الـstartup قبل `server.listen`، أو في CLI script زي `stats.ts` اللي بيخدم شخص واحد.
+- ❌ **ممنوع:** جوه أي request handler، لأنه بيوقّف الـevent loop لكل المستخدمين لحد ما الملف يتقري.
+
+---
+
 ## 📚 مصادر
 - [Node.js — fs/promises](https://nodejs.org/api/fs.html#promises-api)
 - [Node.js — path](https://nodejs.org/api/path.html)

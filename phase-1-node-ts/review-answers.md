@@ -157,3 +157,37 @@ await Promise.all(ids.map((id) => save(id)));   // مع بعض، لو مستقل
 #### 7. `catchAsyncError` في Express 4 vs Express 5
 - **Express 4** اتعمل قبل الـPromises، فهو بينادي الـhandler ومابيبصّش على اللي بيرجع. فلو الـasync handler رمى error، الـPromise بتترفض ومحدش يمسكها: الـrequest يفضل معلّق، أو السيرفر يقع. وعشان كده `catchAsyncError` بتلف الـhandler وتعمل `.catch(next)`، يعني بتحوّل الـrejection لـ`next(err)`.
 - **Express 5** بيبص على الـPromise اللي الـhandler رجّعها، ولو اترفضت بيبعتها لـ`next(err)` لوحده. فمش محتاج `catchAsyncError` خالص.
+
+---
+
+## الدرس 06: fs و path و http و events
+
+#### 1. ليه `path.join` بدل الجمع بـ`+`؟
+ويندوز بيفصل الفولدرات بـ`\` ولينكس بـ`/`، والسيرفر غالبًا لينكس. `path.join` بيحط الفاصل الصح لكل نظام، وكمان بيظبط الـ`..` والـ`/` الزيادة. ولو جمعت بإيدك، الكود هيشتغل عندك ويقع على السيرفر.
+
+#### 2. `readFile("data/orders.json")` من فولدر تاني
+المسار النسبي بيتحسب من **الفولدر اللي شغّلت منه الأمر**، مش من مكان الملف. فلو شغّلت من `D:\backend` بدل `phase-1-node-ts`، هيدوّر في المكان الغلط ويرمي `ENOENT`.
+**الحل:** ابني المسار من مكان الملف نفسه:
+```ts
+const ORDERS_FILE = path.join(import.meta.dirname, "data", "orders.json");
+```
+وده اللي عملناه في `server.ts`، فالسيرفر بيشتغل من أي فولدر.
+
+#### 3. ليه الـbody بيتقري بـ`for await`؟
+الـrequest بيوصل على الشبكة **حتت** (chunks)، خصوصًا لو كبير زي صورة. و`req` نفسه stream. فـ`for await` بيستنى كل حتة ويجمّعها لحد ما الـbody يكمل، وساعتها بس تقدر تعمل `JSON.parse`. وده الشغل اللي `express.json()` بيعمله بدالك.
+
+#### 4. 3 حاجات Express بيعملها بدالك
+- **الـrouting:** `app.get("/orders", ...)` بدل `if (req.method === "GET" && url.pathname === "/orders")`.
+- **قراية الـbody:** `express.json()` بدل `readBody` و`JSON.parse` والـ`400` بتاع الـJSON البايظ.
+- **الرد:** `res.status(201).json(order)` بدل `writeHead` و`JSON.stringify` و`end`.
+- وكمان: `req.query` و`req.params`، والـ404 والـerror handling كـmiddleware.
+
+#### 5. `emit` sync ولا async؟
+**sync.** كل الـlisteners بتتنادى بالترتيب **قبل** السطر اللي بعد `emit`.
+- لو listener فيه شغل CPU تقيل، هيوقّف الـrequest والسيرفر كله (الدرس 04).
+- لو الـlistener **async** (زي اللي بيكتب في `orders.log`)، `emit` بيبدأه بس **مابيستناهوش**. فأي error جواه مش هيوصل للـ`try/catch` اللي حوالين `emit`، ولازم تمسكه جوه الـlistener نفسه، وإلا هيبقى unhandled rejection ويقع السيرفر (الدرس 05).
+
+#### 6. إمتى `readFileSync`؟
+- ✅ **مسموح:** وقت الـstartup قبل `server.listen`، أو في CLI script زي `stats.ts` اللي بيخدم شخص واحد.
+- ❌ **ممنوع:** جوه أي request handler، لأنه بيوقّف الـevent loop لكل المستخدمين لحد ما الملف يتقري.
+

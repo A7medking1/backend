@@ -4,8 +4,8 @@
 
 ## أنا واقف فين دلوقتي
 - **المرحلة:** 1 — Node.js + TypeScript
-- **الدرس الحالي:** [06 — Built-in modules](phase-1-node-ts/lessons/06-built-in-modules.md) (اقراه من `lessons/06-built-in-modules.html`)
-- **الخطوة الجاية:** تمرين 06 في `exercises/06-builtins/`: CLI إحصائيات (تمرين 1 بتاع المرحلة)، وسيرفر `http` فيه 3 routes (تمرين 2)، والـevents. لسه معلّق من قبل: رسالة commit `فف`.
+- **الدرس الحالي:** [07 — env و ESLint و Prettier](phase-1-node-ts/lessons/07-env-and-tooling.md) (اقراه من `lessons/07-env-and-tooling.html`). آخر درس في المرحلة 1.
+- **الخطوة الجاية:** تمرين 07 (الأدوات، و`config.ts`، ومراجعة salla)، وبعدين **سؤال الـCheckpoint بكلامي** عشان المرحلة 1 تتقفل. لسه معلّق من قبل: رسالة commit `فف`.
 - **تاريخ البداية:** 2026-10-19
 
 ---
@@ -35,12 +35,12 @@
 - [x] 03 — ES Modules vs CommonJS + npm (`package.json`، scripts، dependencies vs devDependencies)
 - [x] 04 — **Event Loop** و single-threaded (أهم درس في الخطة)
 - [x] 05 — Callbacks → Promises → `async/await` + `Promise.all`
-- [ ] 06 — Built-in modules: `fs`، `path`، `http`، `events`
+- [x] 06 — Built-in modules: `fs`، `path`، `http`، `events`
 - [ ] 07 — `process.env` و `dotenv` + ESLint + Prettier
 
 ### التمارين
-- [ ] تمرين 1: CLI script يقرا JSON ويطبع إحصائيات
-- [ ] تمرين 2: HTTP server بـ `http` بس، فيه 3 routes
+- [x] تمرين 1: CLI script يقرا JSON ويطبع إحصائيات
+- [x] تمرين 2: HTTP server بـ `http` بس، فيه 3 routes
 - [x] تمرين 3: loop تقيلة جوه request handler وأشوف السيرفر بيقف إزاي
 
 ### Checkpoint
@@ -59,6 +59,8 @@ _(أي حاجة مش واضحة تتكتب هنا لحد ما تتفهم)_
 - [ ] **CommonJS عملي**: تمرين 03 الجزء ج اتأجّل. محتاج أكتب `module.exports`/`require` بإيدي مرة قبل المرحلة 4 (قراية كود Express 4 القديم).
 - [ ] **الدرس 04 كله الـAgent حلّه** (التمرين + الأسئلة). محتاج أشرح بكلامي: ليه `/fast` استنى، و`hashSync` vs `hash`، و`for+await` vs `Promise.all` (ده سؤال الـCheckpoint بتاع المرحلة، ولازم أجاوبه بنفسي قبل ما أقفل المرحلة 1).
 - [ ] **الدرس 05 كله الـAgent حلّه**. أهم حاجة أفهمها بكلامي: الـ3 bugs (`forEach(async)`، و`return` من غير `await`، ونسيان `await`)، والفرق بين `Promise.all` و`Future.wait`.
+- [ ] **الدرس 06 كله الـAgent حلّه**. أهم حاجة: المسار النسبي بيتحسب من فين، وإن `emit` sync، والـrace condition في `POST /orders`.
+- [ ] **قرار:** `typescript-eslint` مش شغال مع TypeScript 7 (بيطلب أقل من 6.1)، فالمشروع هيرجع لـ`typescript@~6.0.3` في تمرين 07.
 - [ ] أسئلة مراجعة الدرس 03 الـAgent جاوبها (الإجابات في آخر ملف الدرس). محتاج أقولها بكلامي.
 - [ ] أسئلة 3، 4، 5 بتوع الدرس 02 (literal union، `Partial` vs `Omit`، `?` vs `| undefined`) الـAgent هو اللي جاوبهم. محتاج أشرحهم بكلامي.
 
@@ -83,3 +85,5 @@ _(أي حاجة مش واضحة تتكتب هنا لحد ما تتفهم)_
 | 2026-10-21 | الدرس 05: الـAgent حل التمرين كله بطلبي (`exercises/05-async/`، 5 ملفات) وجاوب الأسئلة الـ7 في آخر الدرس. الـdashboard خلص في 326ms، والـ3 bugs اتصلّحوا. **الدرس 05 خلص.** |
 | 2026-10-21 | مشكلة القراية: العربي والإنجليزي بيتلخبطوا. الحل: صفحات HTML من اليمين للشمال وغامقة (`python docs/make-readable.py`)، وCSS للـpreview بتاع VS Code، وملف `review-answers` فيه كل إجابات الدروس 02–05. |
 | 2026-10-22 | اتكتب الدرس 06 (`fs` و`path` و`argv` و`http` و`events`). كل الأمثلة متجرّبة، ومعاها أمر `curl.exe` في PowerShell. فيه تمرين 1 و2 بتوع المرحلة. |
+| 2026-10-22 | الدرس 06: الـAgent حل التمرين كله بطلبي (`exercises/06-builtins/`: `stats.ts` و`server.ts` و`client.ts` و`order.ts`) وجاوب الأسئلة الـ6. كل الحالات اتجربت. **الدرس 06 خلص، وتمرين 1 و2 بتوع المرحلة كمان.** |
+| 2026-10-22 | اتكتب الدرس 07 (`process.env`، `--env-file`، `config.ts` بيقف لو فيه إعداد ناقص، Prettier، ESLint). اكتشفنا إن ESLint مش شغال مع TS 7، فالحل TS 6. وESLint مسك bugs الدرس 05 و10 حاجات في التمارين القديمة. |
