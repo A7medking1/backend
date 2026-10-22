@@ -1,0 +1,126 @@
+/* RTL layout for the VS Code Markdown preview (Arabic text + English code).
+   Wired in through .vscode/settings.json -> "markdown.styles". */
+
+/* Dark colors, forced even when the VS Code theme is light */
+:root {
+  --rtl-bg: #1e1f22;
+  --rtl-text: #dcdcdc;
+  --rtl-muted: #a0a4ab;
+  --rtl-heading: #f2f2f2;
+  --rtl-link: #6cb6ff;
+  --rtl-border: #3a3d42;
+  --rtl-code-bg: #2b2d31;
+  --rtl-code-text: #e6c07b;
+  --rtl-block-bg: #16171a;
+  --rtl-quote: #5a8dee;
+  --rtl-row-alt: #24262a;
+}
+
+html,
+body {
+  background: var(--rtl-bg) !important;
+  color: var(--rtl-text) !important;
+}
+
+body {
+  direction: rtl;
+  text-align: right;
+  line-height: 1.9;
+  font-size: 16px;
+}
+
+h1,
+h2,
+h3,
+h4,
+strong {
+  color: var(--rtl-heading) !important;
+}
+
+h1,
+h2 {
+  border-bottom-color: var(--rtl-border) !important;
+}
+
+a {
+  color: var(--rtl-link) !important;
+}
+
+hr {
+  background: var(--rtl-border) !important;
+  border-color: var(--rtl-border) !important;
+}
+
+:not(pre) > code {
+  background: var(--rtl-code-bg) !important;
+  color: var(--rtl-code-text) !important;
+  border-radius: 4px;
+  padding: 1px 5px;
+}
+
+pre {
+  background: var(--rtl-block-bg) !important;
+  border: 1px solid var(--rtl-border);
+  border-radius: 6px;
+}
+
+pre code {
+  color: var(--rtl-text) !important;
+}
+
+table,
+th,
+td {
+  border-color: var(--rtl-border) !important;
+}
+
+th {
+  background: var(--rtl-code-bg) !important;
+}
+
+tr:nth-child(even) td {
+  background: var(--rtl-row-alt) !important;
+}
+
+blockquote {
+  color: var(--rtl-muted) !important;
+  background: transparent !important;
+}
+
+details summary {
+  color: var(--rtl-link);
+  cursor: pointer;
+}
+
+/* Inline code: keep it left-to-right and isolated so it does not scramble the Arabic around it */
+code {
+  direction: ltr;
+  unicode-bidi: isolate;
+}
+
+/* Code blocks: always left-to-right, left-aligned */
+pre,
+pre code {
+  direction: ltr;
+  text-align: left;
+}
+
+/* Quote bar on the right side */
+blockquote {
+  border-left: none;
+  border-right: 5px solid var(--rtl-quote);
+  padding: 0 16px 0 0;
+}
+
+/* Lists indent from the right */
+ul,
+ol {
+  padding-left: 0;
+  padding-right: 2em;
+}
+
+/* Tables read right-to-left, cells stay aligned to the right */
+th,
+td {
+  text-align: right;
+}

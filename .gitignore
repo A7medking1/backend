@@ -2,3 +2,6 @@ node_modules/
 .env
 dist/
 *.log
+
+# generated reading pages (python docs/make-readable.py)
+phase-1-node-ts/**/*.html

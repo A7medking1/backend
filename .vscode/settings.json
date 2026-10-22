@@ -1,0 +1,7 @@
+{
+  "markdown.styles": ["docs/rtl-preview.css"],
+  "[markdown]": {
+    "editor.wordWrap": "on",
+    "editor.unicodeHighlight.ambiguousCharacters": false
+  }
+}
