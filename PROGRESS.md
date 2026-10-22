@@ -4,8 +4,8 @@
 
 ## أنا واقف فين دلوقتي
 - **المرحلة:** 1 — Node.js + TypeScript
-- **الدرس الحالي:** المرحلة 2 — [01 أول سيرفر Express](phase-2-express/lessons/01-express-basics.md) (اقراه من `phase-2-express/lessons/01-express-basics.html`)
-- **الخطوة الجاية:** أجهّز مشروع `phase-2-express` بإيدي، وأعمل Orders API بـExpress (تمرين 01). لسه معلّق من قبل: رسالة commit `فف`.
+- **الدرس الحالي:** المرحلة 2 — [02 الـMiddleware](phase-2-express/lessons/02-middleware.md) (اقراه من `phase-2-express/lessons/02-middleware.html`)
+- **الخطوة الجاية:** تمرين Express 02، **الخطوة 3 (حماية الإضافة بـAPI key)**: 3.1 أعمل `.env` و`.env.example` فيهم `API_KEY` في `phase-2-express`، و3.2 أغيّر `dev` لـ`tsx watch --env-file=.env src/app.ts`، و3.3 أكتب `src/middlewares/require-api-key.ts` (لو `x-api-key` غلط ← `401`). بعدها: أركّبه على `POST` بس، وبعدين الخطوة 4 (`helmet` و`cors` و`morgan`). الـlogger خلص، والـRequest ID اتأجل. لسه معلّق من قبل: رسالة commit `فف`.
 - **تاريخ البداية:** 2026-10-19
 
 ---
@@ -51,7 +51,7 @@
 ## المرحلة 2: Express Fundamentals — التفاصيل
 
 ### الدروس
-- [ ] 01 — أول سيرفر Express: routes وparams وquery وbody و`Router`، وExpress 5 vs 4
+- [x] 01 — أول سيرفر Express: routes وparams وquery وbody و`Router`، وExpress 5 vs 4
 - [ ] 02 — الـMiddleware: الترتيب و`next()` (زي interceptors في Dio)، و`morgan` و`cors` و`helmet`
 - [ ] 03 — REST: تسمية الـroutes، والـstatus codes، و`/api/v1`
 - [ ] 04 — الـErrors: الـerror middleware، و`AppError`، والـasync في Express 5 vs wrappers في Express 4
@@ -110,3 +110,6 @@ _(أي حاجة مش واضحة تتكتب هنا لحد ما تتفهم)_
 | 2026-10-22 | تمرين 07 الجزء أ: نزّلت TS 6 وESLint وPrettier بإيدي، وعملت `eslint.config.js`، وESLint لقى 10 حاجات (اتأجلوا). |
 | 2026-10-22 | تمرين 07 الجزء ب: شفت بإيدي إن `.env` مابيتقراش لوحده، وإن `Boolean("false")` بتبقى `true`. الـAgent كتب `config.ts` بطلبي، واتجرّب: ملف ناقص، و`PORT=abc`، والقيم الافتراضية. اتأجل: سيرفر بـconfig، ومراجعة salla. **الدرس 07 خلص، والمرحلة 1 خلصت.** |
 | 2026-10-22 | **بدأت المرحلة 2.** اتكتب درس Express 01 (اتجرّب على Express 5.3.0): routes، والـ3 أماكن بتاعة الداتا، و`Router`، والـ404، وفروق Express 4/5. منهم إن `app.all("/*")` بتاعة salla بتوقّع السيرفر على Express 5. |
+| 2026-10-22 | **كتبت بإيدي** أول Orders API بـExpress خطوة بخطوة: جهّزت `phase-2-express`، و`orders.router.ts` (كل الأوردرات + فلترة `?status`، وأوردر بالـid بـ400/404، و`POST` بـvalidation و201)، والـ404 في `app.ts`. اتعلمت من أخطائي: default vs named import، ومسار الـrouter `"/"`، والـ404 لازم في الآخر. |
+| 2026-10-22 | قريت `order.router.js` في salla (الـmiddlewares المتكررة، والـvalidation للـparams، و`/updateAll` من غير حماية). الـAgent جاوب أسئلة الدرس 01 بطلبي (في `phase-2-express/review-answers`). **الدرس 01 خلص.** اتكتب الدرس 02 (Middleware)، واتجرّب على Express 5. |
+| 2026-10-22 | تمرين Express 02: **كتبت الـlogger بإيدي** (`res.on("finish")`)، وجربت نقله تحت الـrouter وشفت إن الطلبات اللي الـrouter رد عليها ماوصلتلوش. الـRequest ID اتأجل. وقفت عند الخطوة 3 (API key). |
