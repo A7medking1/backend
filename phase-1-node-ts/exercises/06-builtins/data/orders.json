@@ -1,0 +1,7 @@
+[
+  { "id": 1, "customerId": 10, "status": "delivered", "total": 250 },
+  { "id": 2, "customerId": 11, "status": "pending",   "total": 120 },
+  { "id": 3, "customerId": 10, "status": "cancelled", "total": 80  },
+  { "id": 4, "customerId": 12, "status": "delivered", "total": 400 },
+  { "id": 5, "customerId": 10, "status": "accepted",  "total": 90  }
+]
