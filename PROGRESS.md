@@ -4,8 +4,8 @@
 
 ## أنا واقف فين دلوقتي
 - **المرحلة:** 1 — Node.js + TypeScript
-- **الدرس الحالي:** [07 — env و ESLint و Prettier](phase-1-node-ts/lessons/07-env-and-tooling.md) (اقراه من `lessons/07-env-and-tooling.html`). آخر درس في المرحلة 1.
-- **الخطوة الجاية:** تمرين 07 (الأدوات، و`config.ts`، ومراجعة salla)، وبعدين **سؤال الـCheckpoint بكلامي** عشان المرحلة 1 تتقفل. لسه معلّق من قبل: رسالة commit `فف`.
+- **الدرس الحالي:** المرحلة 2 — [01 أول سيرفر Express](phase-2-express/lessons/01-express-basics.md) (اقراه من `phase-2-express/lessons/01-express-basics.html`)
+- **الخطوة الجاية:** أجهّز مشروع `phase-2-express` بإيدي، وأعمل Orders API بـExpress (تمرين 01). لسه معلّق من قبل: رسالة commit `فف`.
 - **تاريخ البداية:** 2026-10-19
 
 ---
@@ -13,8 +13,8 @@
 ## المراحل
 | # | المرحلة | المدة | الحالة |
 | --- | --- | --- | --- |
-| 1 | Node.js + TypeScript | 1.5 أسبوع | 🟡 شغّال |
-| 2 | Express Fundamentals | 1.5 أسبوع | ⬜ لسه |
+| 1 | Node.js + TypeScript | 1.5 أسبوع | ✅ خلصت |
+| 2 | Express Fundamentals | 1.5 أسبوع | 🟡 الجاية |
 | 3 | MongoDB + Mongoose (مع Express) | 1.5 أسبوع | ⬜ لسه |
 | 4 | Professional Express Architecture | 2 أسبوع | ⬜ لسه |
 | 5 | Auth & Security (Express) | 1.5 أسبوع | ⬜ لسه |
@@ -36,7 +36,7 @@
 - [x] 04 — **Event Loop** و single-threaded (أهم درس في الخطة)
 - [x] 05 — Callbacks → Promises → `async/await` + `Promise.all`
 - [x] 06 — Built-in modules: `fs`، `path`، `http`، `events`
-- [ ] 07 — `process.env` و `dotenv` + ESLint + Prettier
+- [x] 07 — `process.env` و `dotenv` + ESLint + Prettier
 
 ### التمارين
 - [x] تمرين 1: CLI script يقرا JSON ويطبع إحصائيات
@@ -44,7 +44,25 @@
 - [x] تمرين 3: loop تقيلة جوه request handler وأشوف السيرفر بيقف إزاي
 
 ### Checkpoint
-- [ ] أقدر أشرح ليه `await` جوه `for` loop ممكن يكون بطيء، وإمتى أستخدم `Promise.all` بداله.
+- [x] أقدر أشرح ليه `await` جوه `for` loop ممكن يكون بطيء، وإمتى أستخدم `Promise.all` بداله.
+
+---
+
+## المرحلة 2: Express Fundamentals — التفاصيل
+
+### الدروس
+- [ ] 01 — أول سيرفر Express: routes وparams وquery وbody و`Router`، وExpress 5 vs 4
+- [ ] 02 — الـMiddleware: الترتيب و`next()` (زي interceptors في Dio)، و`morgan` و`cors` و`helmet`
+- [ ] 03 — REST: تسمية الـroutes، والـstatus codes، و`/api/v1`
+- [ ] 04 — الـErrors: الـerror middleware، و`AppError`، والـasync في Express 5 vs wrappers في Express 4
+- [ ] 05 — الـValidation بـZod: `validate(schema)` middleware
+- [ ] 06 — التقسيم: routes ← controllers ← services
+
+### المشروع الصغير
+- [ ] Todo API في الـmemory: CRUD + Zod + error handler مركزي + logging middleware + 404
+
+### Checkpoint
+- [ ] أقدر أرسم رحلة الـrequest في Express من أول ما يوصل لحد الرد (ومعاها: إيه اللي بيحصل لو middleware رمى error)، وأعرف الـstatus code الصح لكل حالة (200، 201، 204، 400، 401، 403، 404، 409، 422، 500).
 
 ---
 
@@ -57,10 +75,11 @@ _(أي حاجة مش واضحة تتكتب هنا لحد ما تتفهم)_
 - [ ] **`any` vs `unknown`**: `any` نفسها مابتضربش. هي بتقفل الـtype checking، فالغلط بيعدّي من الـcompile ويضرب وقت التشغيل. `unknown` بتجبرني أتأكد من النوع الأول.
 - [ ] **ESM imports بتتنفّذ قبل كود الملف** (depth-first بالترتيب): `dotenv.config()` بعد الـimports بتشتغل متأخر. مثال حقيقي: salla شغال بالصدفة. الحل `import "dotenv/config"` أول سطر أو `node --env-file=.env`.
 - [ ] **CommonJS عملي**: تمرين 03 الجزء ج اتأجّل. محتاج أكتب `module.exports`/`require` بإيدي مرة قبل المرحلة 4 (قراية كود Express 4 القديم).
-- [ ] **الدرس 04 كله الـAgent حلّه** (التمرين + الأسئلة). محتاج أشرح بكلامي: ليه `/fast` استنى، و`hashSync` vs `hash`، و`for+await` vs `Promise.all` (ده سؤال الـCheckpoint بتاع المرحلة، ولازم أجاوبه بنفسي قبل ما أقفل المرحلة 1).
+- [ ] **الدرس 04 كله الـAgent حلّه** (التمرين + الأسئلة). محتاج أشرح بكلامي: ليه `/fast` استنى، و`hashSync` vs `hash`، و`for+await` vs `Promise.all` (✅ الجزء ده جاوبته بنفسي في الـCheckpoint).
 - [ ] **الدرس 05 كله الـAgent حلّه**. أهم حاجة أفهمها بكلامي: الـ3 bugs (`forEach(async)`، و`return` من غير `await`، ونسيان `await`)، والفرق بين `Promise.all` و`Future.wait`.
 - [ ] **الدرس 06 كله الـAgent حلّه**. أهم حاجة: المسار النسبي بيتحسب من فين، وإن `emit` sync، والـrace condition في `POST /orders`.
 - [ ] **قرار:** `typescript-eslint` مش شغال مع TypeScript 7 (بيطلب أقل من 6.1)، فالمشروع هيرجع لـ`typescript@~6.0.3` في تمرين 07.
+- [ ] **ESLint:** متركّب وشغال (`npx eslint exercises`)، بس فيه 10 حاجات اتأجلت: 5 مقصودة محتاجة `eslint-disable` بسبب، و5 حقيقية (`no-misused-promises` في السيرفرات، و`no-floating-promises`، و`require-await`).
 - [ ] أسئلة مراجعة الدرس 03 الـAgent جاوبها (الإجابات في آخر ملف الدرس). محتاج أقولها بكلامي.
 - [ ] أسئلة 3، 4، 5 بتوع الدرس 02 (literal union، `Partial` vs `Omit`، `?` vs `| undefined`) الـAgent هو اللي جاوبهم. محتاج أشرحهم بكلامي.
 
@@ -87,3 +106,7 @@ _(أي حاجة مش واضحة تتكتب هنا لحد ما تتفهم)_
 | 2026-10-22 | اتكتب الدرس 06 (`fs` و`path` و`argv` و`http` و`events`). كل الأمثلة متجرّبة، ومعاها أمر `curl.exe` في PowerShell. فيه تمرين 1 و2 بتوع المرحلة. |
 | 2026-10-22 | الدرس 06: الـAgent حل التمرين كله بطلبي (`exercises/06-builtins/`: `stats.ts` و`server.ts` و`client.ts` و`order.ts`) وجاوب الأسئلة الـ6. كل الحالات اتجربت. **الدرس 06 خلص، وتمرين 1 و2 بتوع المرحلة كمان.** |
 | 2026-10-22 | اتكتب الدرس 07 (`process.env`، `--env-file`، `config.ts` بيقف لو فيه إعداد ناقص، Prettier، ESLint). اكتشفنا إن ESLint مش شغال مع TS 7، فالحل TS 6. وESLint مسك bugs الدرس 05 و10 حاجات في التمارين القديمة. |
+| 2026-10-22 | **✅ عدّيت الـCheckpoint بتاع المرحلة 1** بإجابتي: sequential vs parallel، والوقت مجموع vs أطول واحد، و5 حالات ماينفعش فيها `Promise.all` (منهم الـCPU-bound و`allSettled` و batches). فاضل تمرين 07. |
+| 2026-10-22 | تمرين 07 الجزء أ: نزّلت TS 6 وESLint وPrettier بإيدي، وعملت `eslint.config.js`، وESLint لقى 10 حاجات (اتأجلوا). |
+| 2026-10-22 | تمرين 07 الجزء ب: شفت بإيدي إن `.env` مابيتقراش لوحده، وإن `Boolean("false")` بتبقى `true`. الـAgent كتب `config.ts` بطلبي، واتجرّب: ملف ناقص، و`PORT=abc`، والقيم الافتراضية. اتأجل: سيرفر بـconfig، ومراجعة salla. **الدرس 07 خلص، والمرحلة 1 خلصت.** |
+| 2026-10-22 | **بدأت المرحلة 2.** اتكتب درس Express 01 (اتجرّب على Express 5.3.0): routes، والـ3 أماكن بتاعة الداتا، و`Router`، والـ404، وفروق Express 4/5. منهم إن `app.all("/*")` بتاعة salla بتوقّع السيرفر على Express 5. |

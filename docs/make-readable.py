@@ -45,7 +45,7 @@ def build(md_path: Path) -> Path:
 
 
 if __name__ == "__main__":
-    targets = sorted((ROOT / "phase-1-node-ts" / "lessons").glob("*.md"))
+    targets = sorted(ROOT.glob("phase-*/lessons/*.md"))
     targets.append(ROOT / "phase-1-node-ts" / "review-answers.md")
     for path in targets:
         if path.exists():
