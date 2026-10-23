@@ -5,7 +5,7 @@
 ## أنا واقف فين دلوقتي
 - **المرحلة:** 2 — Express Fundamentals
 - **الدرس الحالي:** المرحلة 2 — [03 REST](phase-2-express/lessons/03-rest.md) (اقراه من `phase-2-express/lessons/03-rest.html`)
-- **الخطوة الجاية:** تمرين Express 03، **الخطوة د) pagination** على `GET /orders` بـ`?page&limit` و`meta`. خلص: 0) ترتيب `app.ts`، وأ) `Location` وفصل 400/422، وب) `PATCH /:id`، وج) `DELETE /:id`. فاضل بعد د: هـ) تصميم 6 endpoints من salla على الورق. اختياري: الـ`import { logger }` اللي مش مستخدم في `app.ts`، و`(err)` في callback الـ`app.listen`. الـRequest ID لسه مؤجل. لسه معلّق من قبل: رسالة commit `فف`، وملفين `package.json`/`package-lock.json` في الـroot اتعملوا بالغلط (مش في Git).
+- **الخطوة الجاية:** تمرين Express 03، **الخطوة هـ) على الورق**: `phase-2-express/exercises/03-salla-rest.md`، أكتب الشكل الـREST لـ6 endpoints من salla (الـmethod والـURL والـstatus). خلص: 0 وأ وب وج بإيدي، ود (pagination) كتبه الـAgent. اختياري: حد أقصى لـ`limit` (أكبر من 100 ← 400). اختياري: الـ`import { logger }` اللي مش مستخدم في `app.ts`، و`(err)` في callback الـ`app.listen`. الـRequest ID لسه مؤجل. لسه معلّق من قبل: رسالة commit `فف`، وملفين `package.json`/`package-lock.json` في الـroot اتعملوا بالغلط (مش في Git).
 - **تاريخ البداية:** 2026-10-19
 
 ---
@@ -82,6 +82,7 @@ _(أي حاجة مش واضحة تتكتب هنا لحد ما تتفهم)_
 - [ ] **ESLint:** متركّب وشغال (`npx eslint exercises`)، بس فيه 10 حاجات اتأجلت: 5 مقصودة محتاجة `eslint-disable` بسبب، و5 حقيقية (`no-misused-promises` في السيرفرات، و`no-floating-promises`، و`require-await`).
 - [ ] أسئلة مراجعة الدرس 03 الـAgent جاوبها (الإجابات في آخر ملف الدرس). محتاج أقولها بكلامي.
 - [ ] أسئلة 3، 4، 5 بتوع الدرس 02 (literal union، `Partial` vs `Omit`، `?` vs `| undefined`) الـAgent هو اللي جاوبهم. محتاج أشرحهم بكلامي.
+- [ ] **الـpagination في تمرين Express 03 الـAgent كتبها.** محتاج أشرح بكلامي: ليه `??` جوه `Number()` مش بره، وليه `total` قبل الـ`slice`، والفرق بين `slice` و`splice`. وأعمل الحد الأقصى لـ`limit` بإيدي.
 - [ ] **أسئلة درس Express 02 (Middleware) الـ7 الـAgent جاوبها بطلبي** (في `phase-2-express/review-answers.md`). أهم حاجة أقولها بكلامي: ليه `res.on("finish")` مش بعد `next()`، والفرق بين الـ3 مستويات، وليه CORS مابيأثرش على Flutter موبايل.
 
 ---
@@ -120,3 +121,4 @@ _(أي حاجة مش واضحة تتكتب هنا لحد ما تتفهم)_
 | 2026-10-23 | تمرين Express 03 (بإيدي): الخطوة 0، رتّبت `app.ts` بعد ما شفنا إن `express.json()` لو قبل `morgan`، الـJSON البايظ مابيتسجّلش. الخطوة أ: فصلت `total` لشرطين بـ`Number.isFinite` (أحسن من `typeof`) وضفت `Location`. الـ`422` بس كتبه الـAgent بطلبي. اكتشفنا كمان إن callback الـ`app.listen` في Express 5 بياخد `err`، فلو البورت مشغول بيطبع الـURL برضه. |
 | 2026-10-23 | الخطوة ب (بإيدي): `PATCH /:id` بـ400/401/404/422/409/200، والترتيب صح (الفحوصات الرخيصة الأول). فصلت `status` لـ400 (مش string) و422 (مش مسموح). **قرار تصميم:** نفس الحالة تاني (retry) بترجع `409 "Order is already X"` مش `200`، وFlutter هيعرض الرسالة. اتشرح التمن: الـretry بعد النجاح هيرجع 409، فFlutter لازم يفرّق بالرسالة. |
 | 2026-10-23 | الخطوة ج (بإيدي): `DELETE /:id` بـ400/401/404، والمسح بـ`find` + `indexOf` + `splice`. اخترت أسيب نجاح المسح `200` و`data: {}` بدل `204` (الاتنين مقبولين). |
+| 2026-10-23 | الخطوة د: الـpagination (`?page&limit` و`meta`) **الـAgent كتبها بطلبي** وشرحها سطر سطر. اتجرّبت بـ10 حالات منهم `?page=99` ← 200 و`[]`، و`?page=1&page=2` ← 400. |

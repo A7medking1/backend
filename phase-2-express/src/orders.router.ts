@@ -19,7 +19,20 @@ ordersRouter.get("/", (req, res) => {
         ? orders.filter((o) => o.status === status)
         : orders;
 
-    res.json({ ok: true, data: result });
+    const page = Number(req.query.page ?? "1");
+    const limit = Number(req.query.limit ?? "10");
+
+    if (!Number.isInteger(page) || page < 1) {
+        return res.status(400).json({ ok: false, error: "page must be a positive integer" });
+    }
+    if (!Number.isInteger(limit) || limit < 1) {
+        return res.status(400).json({ ok: false, error: "limit must be a positive integer" });
+    }
+
+    const total = result.length;
+    const data = result.slice((page - 1) * limit, page * limit);
+
+    res.json({ ok: true, data, meta: { page, limit, total } });
 });
 
 ordersRouter.get("/:id", (req, res) => {
