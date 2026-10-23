@@ -3,9 +3,9 @@
 > الملف ده هو "نقطة الحفظ". أي Agent أو أي جهاز: ابدأ من هنا.
 
 ## أنا واقف فين دلوقتي
-- **المرحلة:** 1 — Node.js + TypeScript
-- **الدرس الحالي:** المرحلة 2 — [02 الـMiddleware](phase-2-express/lessons/02-middleware.md) (اقراه من `phase-2-express/lessons/02-middleware.html`)
-- **الخطوة الجاية:** تمرين Express 02، **الخطوة 3 (حماية الإضافة بـAPI key)**: 3.1 أعمل `.env` و`.env.example` فيهم `API_KEY` في `phase-2-express`، و3.2 أغيّر `dev` لـ`tsx watch --env-file=.env src/app.ts`، و3.3 أكتب `src/middlewares/require-api-key.ts` (لو `x-api-key` غلط ← `401`). بعدها: أركّبه على `POST` بس، وبعدين الخطوة 4 (`helmet` و`cors` و`morgan`). الـlogger خلص، والـRequest ID اتأجل. لسه معلّق من قبل: رسالة commit `فف`.
+- **المرحلة:** 2 — Express Fundamentals
+- **الدرس الحالي:** المرحلة 2 — الدرس 02 (Middleware) خلص. الجاي: الدرس 03 (REST)، لسه ماتكتبش.
+- **الخطوة الجاية:** الـAgent يكتب درس Express 03 (REST: تسمية الـroutes، والـstatus codes، و`/api/v1`). قبلها قرار صغير في `app.ts`: الـ`import { logger }` مش مستخدم (يا تشيله، يا ترجّع `app.use(logger)` جنب `morgan` وتقارن السطرين)، وترتّب `helmet` الأول. الـRequest ID لسه مؤجل. لسه معلّق من قبل: رسالة commit `فف`.
 - **تاريخ البداية:** 2026-10-19
 
 ---
@@ -14,7 +14,7 @@
 | # | المرحلة | المدة | الحالة |
 | --- | --- | --- | --- |
 | 1 | Node.js + TypeScript | 1.5 أسبوع | ✅ خلصت |
-| 2 | Express Fundamentals | 1.5 أسبوع | 🟡 الجاية |
+| 2 | Express Fundamentals | 1.5 أسبوع | 🟡 شغّال |
 | 3 | MongoDB + Mongoose (مع Express) | 1.5 أسبوع | ⬜ لسه |
 | 4 | Professional Express Architecture | 2 أسبوع | ⬜ لسه |
 | 5 | Auth & Security (Express) | 1.5 أسبوع | ⬜ لسه |
@@ -52,7 +52,7 @@
 
 ### الدروس
 - [x] 01 — أول سيرفر Express: routes وparams وquery وbody و`Router`، وExpress 5 vs 4
-- [ ] 02 — الـMiddleware: الترتيب و`next()` (زي interceptors في Dio)، و`morgan` و`cors` و`helmet`
+- [x] 02 — الـMiddleware: الترتيب و`next()` (زي interceptors في Dio)، و`morgan` و`cors` و`helmet`
 - [ ] 03 — REST: تسمية الـroutes، والـstatus codes، و`/api/v1`
 - [ ] 04 — الـErrors: الـerror middleware، و`AppError`، والـasync في Express 5 vs wrappers في Express 4
 - [ ] 05 — الـValidation بـZod: `validate(schema)` middleware
@@ -82,6 +82,7 @@ _(أي حاجة مش واضحة تتكتب هنا لحد ما تتفهم)_
 - [ ] **ESLint:** متركّب وشغال (`npx eslint exercises`)، بس فيه 10 حاجات اتأجلت: 5 مقصودة محتاجة `eslint-disable` بسبب، و5 حقيقية (`no-misused-promises` في السيرفرات، و`no-floating-promises`، و`require-await`).
 - [ ] أسئلة مراجعة الدرس 03 الـAgent جاوبها (الإجابات في آخر ملف الدرس). محتاج أقولها بكلامي.
 - [ ] أسئلة 3، 4، 5 بتوع الدرس 02 (literal union، `Partial` vs `Omit`، `?` vs `| undefined`) الـAgent هو اللي جاوبهم. محتاج أشرحهم بكلامي.
+- [ ] **أسئلة درس Express 02 (Middleware) الـ7 الـAgent جاوبها بطلبي** (في `phase-2-express/review-answers.md`). أهم حاجة أقولها بكلامي: ليه `res.on("finish")` مش بعد `next()`، والفرق بين الـ3 مستويات، وليه CORS مابيأثرش على Flutter موبايل.
 
 ---
 
@@ -113,3 +114,5 @@ _(أي حاجة مش واضحة تتكتب هنا لحد ما تتفهم)_
 | 2026-10-22 | **كتبت بإيدي** أول Orders API بـExpress خطوة بخطوة: جهّزت `phase-2-express`، و`orders.router.ts` (كل الأوردرات + فلترة `?status`، وأوردر بالـid بـ400/404، و`POST` بـvalidation و201)، والـ404 في `app.ts`. اتعلمت من أخطائي: default vs named import، ومسار الـrouter `"/"`، والـ404 لازم في الآخر. |
 | 2026-10-22 | قريت `order.router.js` في salla (الـmiddlewares المتكررة، والـvalidation للـparams، و`/updateAll` من غير حماية). الـAgent جاوب أسئلة الدرس 01 بطلبي (في `phase-2-express/review-answers`). **الدرس 01 خلص.** اتكتب الدرس 02 (Middleware)، واتجرّب على Express 5. |
 | 2026-10-22 | تمرين Express 02: **كتبت الـlogger بإيدي** (`res.on("finish")`)، وجربت نقله تحت الـrouter وشفت إن الطلبات اللي الـrouter رد عليها ماوصلتلوش. الـRequest ID اتأجل. وقفت عند الخطوة 3 (API key). |
+| 2026-10-23 | **الخطوة 3 (حماية الـ`POST` بـAPI key) خلصت.** عملت `.env`/`.env.example` بإيدي، وظبطت `--env-file=.env` **قبل** الملف في script `dev` (اتعلمت: الفلاج قبل الملف = لـNode، بعده = `argv`). كتبت `require-api-key.ts` بإيدي (`x-api-key` lowercase، فصل missing/invalid، `return` بعد كل `res`، كله 401)، وركّبته على الـ`POST` بس بـnamed import. نزّلت `node_modules` (كانت ناقصة ← `tsc not found`). اتجرّب بـ4 حالات curl وكله صح. |
+| 2026-10-23 | الخطوة 4: ركّبت `helmet` و`cors()` و`morgan("dev")` بإيدي في `app.ts` (الـAgent نزّل المكتبات)، وشفت headers الأمان و`Access-Control-Allow-Origin: *` بـcurl. الـ`logger` بتاعي فضل import من غير استخدام (قرار معلّق). الـAgent جاوب أسئلة الدرس 02 بطلبي في `review-answers.md`. **الدرس 02 خلص.** |
