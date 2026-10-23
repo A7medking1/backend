@@ -1,4 +1,5 @@
 import { Router } from "express";
+import { requireApiKey } from "./middlewares/require-api-key.js";
 
 
 const orders = [
@@ -37,7 +38,7 @@ ordersRouter.get("/:id", (req, res) => {
     res.json({ ok: true, data: order });
 });
 
-ordersRouter.post("/", (req, res) => {
+ordersRouter.post("/", requireApiKey, (req, res) => {
     const { customerId, total } = req.body ?? {};
 
 
