@@ -46,8 +46,13 @@ ordersRouter.post("/", requireApiKey, (req, res) => {
         return res.status(400).json({ ok: false, error: "customerId must be a number" });
     }
 
-    if (!(typeof total === "number" && total > 0)) {
-        return res.status(400).json({ ok: false, error: "total must be greater than 0" });
+
+    if (!Number.isFinite(total)) {
+        return res.status(400).json({ ok: false, error: "total must be a number" });
+    }
+
+    if (total <= 0) {
+        return res.status(422).json({ ok: false, error: "total must be greater than 0" });
     }
 
     const order = {
@@ -59,5 +64,5 @@ ordersRouter.post("/", requireApiKey, (req, res) => {
 
     orders.push(order);
 
-    res.status(201).json({ ok: true, data: order });
+    res.status(201).location(`/api/v1/orders/${order.id}`).json({ ok: true, data: order });
 });

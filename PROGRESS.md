@@ -4,8 +4,8 @@
 
 ## أنا واقف فين دلوقتي
 - **المرحلة:** 2 — Express Fundamentals
-- **الدرس الحالي:** المرحلة 2 — الدرس 02 (Middleware) خلص. الجاي: الدرس 03 (REST)، لسه ماتكتبش.
-- **الخطوة الجاية:** الـAgent يكتب درس Express 03 (REST: تسمية الـroutes، والـstatus codes، و`/api/v1`). قبلها قرار صغير في `app.ts`: الـ`import { logger }` مش مستخدم (يا تشيله، يا ترجّع `app.use(logger)` جنب `morgan` وتقارن السطرين)، وترتّب `helmet` الأول. الـRequest ID لسه مؤجل. لسه معلّق من قبل: رسالة commit `فف`.
+- **الدرس الحالي:** المرحلة 2 — [03 REST](phase-2-express/lessons/03-rest.md) (اقراه من `phase-2-express/lessons/03-rest.html`)
+- **الخطوة الجاية:** تمرين Express 03، **الخطوة ب) `PATCH /:id` للـstatus** (400/404/422/409/200). خلص: 0) ترتيب `app.ts` (`helmet → cors → morgan → express.json()`)، وأ) `Location` وفصل 400/422. فاضل بعد ب: ج) `DELETE /:id` بـ204، د) pagination بـ`meta`، هـ) تصميم 6 endpoints من salla على الورق. اختياري: الـ`import { logger }` اللي مش مستخدم في `app.ts`، و`(err)` في callback الـ`app.listen`. الـRequest ID لسه مؤجل. لسه معلّق من قبل: رسالة commit `فف`، وملفين `package.json`/`package-lock.json` في الـroot اتعملوا بالغلط (مش في Git).
 - **تاريخ البداية:** 2026-10-19
 
 ---
@@ -116,3 +116,5 @@ _(أي حاجة مش واضحة تتكتب هنا لحد ما تتفهم)_
 | 2026-10-22 | تمرين Express 02: **كتبت الـlogger بإيدي** (`res.on("finish")`)، وجربت نقله تحت الـrouter وشفت إن الطلبات اللي الـrouter رد عليها ماوصلتلوش. الـRequest ID اتأجل. وقفت عند الخطوة 3 (API key). |
 | 2026-10-23 | **الخطوة 3 (حماية الـ`POST` بـAPI key) خلصت.** عملت `.env`/`.env.example` بإيدي، وظبطت `--env-file=.env` **قبل** الملف في script `dev` (اتعلمت: الفلاج قبل الملف = لـNode، بعده = `argv`). كتبت `require-api-key.ts` بإيدي (`x-api-key` lowercase، فصل missing/invalid، `return` بعد كل `res`، كله 401)، وركّبته على الـ`POST` بس بـnamed import. نزّلت `node_modules` (كانت ناقصة ← `tsc not found`). اتجرّب بـ4 حالات curl وكله صح. |
 | 2026-10-23 | الخطوة 4: ركّبت `helmet` و`cors()` و`morgan("dev")` بإيدي في `app.ts` (الـAgent نزّل المكتبات)، وشفت headers الأمان و`Access-Control-Allow-Origin: *` بـcurl. الـ`logger` بتاعي فضل import من غير استخدام (قرار معلّق). الـAgent جاوب أسئلة الدرس 02 بطلبي في `review-answers.md`. **الدرس 02 خلص.** |
+| 2026-10-23 | اتكتب الدرس 03 (REST): methods وidempotency، والتسمية، والـ10 status codes، و`/api/v1`، وشكل الرد. فيه تحليل لـendpoints salla الحقيقية من `api_constant.dart` (الدور في الـURL مشكلة أمان). اتجرّب على Express 5.3.0: `204` بيشيل الـbody، ومفيش `405` لوحده، و`res.send(404)` و`res.json(obj, 400)` بيرجّعوا **200** في Express 5. |
+| 2026-10-23 | تمرين Express 03 (بإيدي): الخطوة 0، رتّبت `app.ts` بعد ما شفنا إن `express.json()` لو قبل `morgan`، الـJSON البايظ مابيتسجّلش. الخطوة أ: فصلت `total` لشرطين بـ`Number.isFinite` (أحسن من `typeof`) وضفت `Location`. الـ`422` بس كتبه الـAgent بطلبي. اكتشفنا كمان إن callback الـ`app.listen` في Express 5 بياخد `err`، فلو البورت مشغول بيطبع الـURL برضه. |
