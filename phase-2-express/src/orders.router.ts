@@ -66,3 +66,60 @@ ordersRouter.post("/", requireApiKey, (req, res) => {
 
     res.status(201).location(`/api/v1/orders/${order.id}`).json({ ok: true, data: order });
 });
+
+
+
+const ALLOWED_STATUSES = ["pending", "delivered", "cancelled"];
+
+ordersRouter.patch("/:id", requireApiKey, (req, res) => {
+    const id = Number(req.params.id);
+
+    if (Number.isNaN(id)) {
+        return res.status(400).json({ ok: false, error: "id must be a number" });
+    }
+
+    const { status } = req.body ?? {};
+
+    if (typeof status !== "string") {
+        return res.status(400).json({ ok: false, error: "status must be a string" });
+    }
+    if (!ALLOWED_STATUSES.includes(status)) {
+        return res.status(422).json({ ok: false, error: "status must be one of: pending, delivered, cancelled" });
+    }
+
+    const order = orders.find((o) => o.id === id);
+
+    if (!order) {
+        return res.status(404).json({ ok: false, error: "Order not found" });
+    }
+
+    if (order.status === status) {
+        return res.status(409).json({ ok: false, error: `Order is already ${status}` });
+    }
+
+    if (order.status === "delivered" || order.status === "cancelled") {
+        return res.status(409).json({ ok: false, error: `Order is already ${order.status}` });
+    }
+
+    order.status = status;
+    res.json({ ok: true, data: order });
+});
+
+
+ordersRouter.delete("/:id", requireApiKey, (req, res) => {
+    const id = Number(req.params.id);
+
+    if (Number.isNaN(id)) {
+        return res.status(400).json({ ok: false, error: "id must be a number" });
+    }
+
+    const order = orders.find((o) => o.id === id);
+
+    if (!order) {
+        return res.status(404).json({ ok: false, error: "Order not found" });
+    }
+
+    orders.splice(orders.indexOf(order), 1);
+
+    res.json({ ok: true, data: {} });
+});

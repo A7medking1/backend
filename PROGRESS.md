@@ -5,7 +5,7 @@
 ## أنا واقف فين دلوقتي
 - **المرحلة:** 2 — Express Fundamentals
 - **الدرس الحالي:** المرحلة 2 — [03 REST](phase-2-express/lessons/03-rest.md) (اقراه من `phase-2-express/lessons/03-rest.html`)
-- **الخطوة الجاية:** تمرين Express 03، **الخطوة ب) `PATCH /:id` للـstatus** (400/404/422/409/200). خلص: 0) ترتيب `app.ts` (`helmet → cors → morgan → express.json()`)، وأ) `Location` وفصل 400/422. فاضل بعد ب: ج) `DELETE /:id` بـ204، د) pagination بـ`meta`، هـ) تصميم 6 endpoints من salla على الورق. اختياري: الـ`import { logger }` اللي مش مستخدم في `app.ts`، و`(err)` في callback الـ`app.listen`. الـRequest ID لسه مؤجل. لسه معلّق من قبل: رسالة commit `فف`، وملفين `package.json`/`package-lock.json` في الـroot اتعملوا بالغلط (مش في Git).
+- **الخطوة الجاية:** تمرين Express 03، **الخطوة د) pagination** على `GET /orders` بـ`?page&limit` و`meta`. خلص: 0) ترتيب `app.ts`، وأ) `Location` وفصل 400/422، وب) `PATCH /:id`، وج) `DELETE /:id`. فاضل بعد د: هـ) تصميم 6 endpoints من salla على الورق. اختياري: الـ`import { logger }` اللي مش مستخدم في `app.ts`، و`(err)` في callback الـ`app.listen`. الـRequest ID لسه مؤجل. لسه معلّق من قبل: رسالة commit `فف`، وملفين `package.json`/`package-lock.json` في الـroot اتعملوا بالغلط (مش في Git).
 - **تاريخ البداية:** 2026-10-19
 
 ---
@@ -118,3 +118,5 @@ _(أي حاجة مش واضحة تتكتب هنا لحد ما تتفهم)_
 | 2026-10-23 | الخطوة 4: ركّبت `helmet` و`cors()` و`morgan("dev")` بإيدي في `app.ts` (الـAgent نزّل المكتبات)، وشفت headers الأمان و`Access-Control-Allow-Origin: *` بـcurl. الـ`logger` بتاعي فضل import من غير استخدام (قرار معلّق). الـAgent جاوب أسئلة الدرس 02 بطلبي في `review-answers.md`. **الدرس 02 خلص.** |
 | 2026-10-23 | اتكتب الدرس 03 (REST): methods وidempotency، والتسمية، والـ10 status codes، و`/api/v1`، وشكل الرد. فيه تحليل لـendpoints salla الحقيقية من `api_constant.dart` (الدور في الـURL مشكلة أمان). اتجرّب على Express 5.3.0: `204` بيشيل الـbody، ومفيش `405` لوحده، و`res.send(404)` و`res.json(obj, 400)` بيرجّعوا **200** في Express 5. |
 | 2026-10-23 | تمرين Express 03 (بإيدي): الخطوة 0، رتّبت `app.ts` بعد ما شفنا إن `express.json()` لو قبل `morgan`، الـJSON البايظ مابيتسجّلش. الخطوة أ: فصلت `total` لشرطين بـ`Number.isFinite` (أحسن من `typeof`) وضفت `Location`. الـ`422` بس كتبه الـAgent بطلبي. اكتشفنا كمان إن callback الـ`app.listen` في Express 5 بياخد `err`، فلو البورت مشغول بيطبع الـURL برضه. |
+| 2026-10-23 | الخطوة ب (بإيدي): `PATCH /:id` بـ400/401/404/422/409/200، والترتيب صح (الفحوصات الرخيصة الأول). فصلت `status` لـ400 (مش string) و422 (مش مسموح). **قرار تصميم:** نفس الحالة تاني (retry) بترجع `409 "Order is already X"` مش `200`، وFlutter هيعرض الرسالة. اتشرح التمن: الـretry بعد النجاح هيرجع 409، فFlutter لازم يفرّق بالرسالة. |
+| 2026-10-23 | الخطوة ج (بإيدي): `DELETE /:id` بـ400/401/404، والمسح بـ`find` + `indexOf` + `splice`. اخترت أسيب نجاح المسح `200` و`data: {}` بدل `204` (الاتنين مقبولين). |
