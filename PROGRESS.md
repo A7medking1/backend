@@ -4,8 +4,8 @@
 
 ## أنا واقف فين دلوقتي
 - **المرحلة:** 2 — Express Fundamentals
-- **الدرس الحالي:** المرحلة 2 — [03 REST](phase-2-express/lessons/03-rest.md) (اقراه من `phase-2-express/lessons/03-rest.html`)
-- **الخطوة الجاية:** تمرين Express 03، **الخطوة هـ) على الورق**: `phase-2-express/exercises/03-salla-rest.md`، أكتب الشكل الـREST لـ6 endpoints من salla (الـmethod والـURL والـstatus). خلص: 0 وأ وب وج بإيدي، ود (pagination) كتبه الـAgent. اختياري: حد أقصى لـ`limit` (أكبر من 100 ← 400). اختياري: الـ`import { logger }` اللي مش مستخدم في `app.ts`، و`(err)` في callback الـ`app.listen`. الـRequest ID لسه مؤجل. لسه معلّق من قبل: رسالة commit `فف`، وملفين `package.json`/`package-lock.json` في الـroot اتعملوا بالغلط (مش في Git).
+- **الدرس الحالي:** المرحلة 2 — [04 الـErrors](phase-2-express/lessons/04-errors.md) (اقراه من `phase-2-express/lessons/04-errors.html`)
+- **الخطوة الجاية:** اقرا الدرس 04 واعمل التمرين بإيدي بالترتيب: **0** أصلّح فحص الـid بـ`Number.isInteger` (متبقي من تمرين 03)، **أ** `AppError`، **ب** `error-handler.ts`، **ج** أركّبه في `app.ts`، **د** أحوّل الـrouter لـ`throw new AppError`، **هـ** `curl`، **و** أكسر الكود عن قصد. لما أخلّص أقول "راجع تمرين express 04". اختياري: حد أقصى لـ`limit`، و`(err)` في callback الـ`app.listen`. الـRequest ID لسه مؤجل. لسه معلّق من قبل: رسالة commit `فف`، وملفين `package.json`/`package-lock.json` في الـroot اتعملوا بالغلط (مش في Git).
 - **تاريخ البداية:** 2026-10-19
 
 ---
@@ -53,7 +53,7 @@
 ### الدروس
 - [x] 01 — أول سيرفر Express: routes وparams وquery وbody و`Router`، وExpress 5 vs 4
 - [x] 02 — الـMiddleware: الترتيب و`next()` (زي interceptors في Dio)، و`morgan` و`cors` و`helmet`
-- [ ] 03 — REST: تسمية الـroutes، والـstatus codes، و`/api/v1`
+- [x] 03 — REST: تسمية الـroutes، والـstatus codes، و`/api/v1` _(خطوة هـ بتاعة salla اتلغت بطلبي. عاوز أتعلم من غير salla)_
 - [ ] 04 — الـErrors: الـerror middleware، و`AppError`، والـasync في Express 5 vs wrappers في Express 4
 - [ ] 05 — الـValidation بـZod: `validate(schema)` middleware
 - [ ] 06 — التقسيم: routes ← controllers ← services
@@ -83,6 +83,7 @@ _(أي حاجة مش واضحة تتكتب هنا لحد ما تتفهم)_
 - [ ] أسئلة مراجعة الدرس 03 الـAgent جاوبها (الإجابات في آخر ملف الدرس). محتاج أقولها بكلامي.
 - [ ] أسئلة 3، 4، 5 بتوع الدرس 02 (literal union، `Partial` vs `Omit`، `?` vs `| undefined`) الـAgent هو اللي جاوبهم. محتاج أشرحهم بكلامي.
 - [ ] **الـpagination في تمرين Express 03 الـAgent كتبها.** محتاج أشرح بكلامي: ليه `??` جوه `Number()` مش بره، وليه `total` قبل الـ`slice`، والفرق بين `slice` و`splice`. وأعمل الحد الأقصى لـ`limit` بإيدي.
+- [x] ~~الخطوة هـ (salla بشكل REST)~~ **اتلغت بقرار مني (2026-10-31)**: من هنا ورايح مفيش salla في الدروس. الملف `phase-2-express/exercises/03-salla-rest.md` موجود لو احتجته.
 - [ ] **أسئلة درس Express 02 (Middleware) الـ7 الـAgent جاوبها بطلبي** (في `phase-2-express/review-answers.md`). أهم حاجة أقولها بكلامي: ليه `res.on("finish")` مش بعد `next()`، والفرق بين الـ3 مستويات، وليه CORS مابيأثرش على Flutter موبايل.
 
 ---
@@ -122,3 +123,6 @@ _(أي حاجة مش واضحة تتكتب هنا لحد ما تتفهم)_
 | 2026-10-23 | الخطوة ب (بإيدي): `PATCH /:id` بـ400/401/404/422/409/200، والترتيب صح (الفحوصات الرخيصة الأول). فصلت `status` لـ400 (مش string) و422 (مش مسموح). **قرار تصميم:** نفس الحالة تاني (retry) بترجع `409 "Order is already X"` مش `200`، وFlutter هيعرض الرسالة. اتشرح التمن: الـretry بعد النجاح هيرجع 409، فFlutter لازم يفرّق بالرسالة. |
 | 2026-10-23 | الخطوة ج (بإيدي): `DELETE /:id` بـ400/401/404، والمسح بـ`find` + `indexOf` + `splice`. اخترت أسيب نجاح المسح `200` و`data: {}` بدل `204` (الاتنين مقبولين). |
 | 2026-10-23 | الخطوة د: الـpagination (`?page&limit` و`meta`) **الـAgent كتبها بطلبي** وشرحها سطر سطر. اتجرّبت بـ10 حالات منهم `?page=99` ← 200 و`[]`، و`?page=1&page=2` ← 400. |
+| 2026-10-31 | الخطوة هـ: طلبت من الـAgent يكتبها. قرا `salla_user` الحقيقي (كل الـ6 كانوا `PUT`/`GET`/`POST`)، وكتب `exercises/03-salla-rest.md` بالـ6 endpoints بشكل REST. فاضل: أراجعهم وأجاوب الـ3 أسئلة بكلامي، وبعدها أقفل الدرس 03. |
+| 2026-10-31 | **مراجعة تمرين Express 03:** typecheck عدّى، و24 حالة curl اتجرّبت. أ وب وج ود كلهم صح. لقينا: فحص الـid بـ`Number.isNaN` بيقبل `2e0` و`0x2` و`" 2 "`، وJSON البايظ بيرجّع صفحة HTML فيها stack trace (الدرس 04)، ومفيش حد أقصى لـ`limit`. الدرس 03 لسه مقفلش. |
+| 2026-10-31 | طلبت أتعلم من غير salla وأكمّل. اتلغت خطوة هـ، واتكتب الدرس 04 (الـErrors) بأمثلة متجرّبة على Express 5.3.0 و4.22.3: رحلة الـerror وشرط الـ4 parameters، والـasync في 5 vs 4 (الـasync handler في 4 وقّع السيرفر)، والـdefault handler، و`AppError`، والـerror handler المركزي، والـ404 كـerror، و`throw` جوه `setTimeout` اللي Express مش بيمسكه. التمرين كله بإيدي. |
